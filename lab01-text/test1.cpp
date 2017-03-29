@@ -8,8 +8,8 @@
 
 #include <iostream>
 #include "myString.h"
-#include "config.h"
-
+//#include "config.h"
+using namespace std;
 //--------------------------------------------------------------------
 //
 //  Function prototype

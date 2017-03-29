@@ -21,19 +21,19 @@ myString:: myString ( const char *charSeq )
 // charSeq. Allocates enough memory for this string.
 
 {
-    bufferSize = strlen(charSeq) + 1;   // Account for null
+    myStringSize = strlen(charSeq) + 1;   // Account for null
 
     try
     {
-        buffer = new char [ bufferSize ];   // Allocate memory
+        Arr = new char [ myStringSize ];   // Allocate memory
     }
     catch ( bad_alloc &e )
     {
-        cerr << "myString::myString(const char): bad_alloc: buffer == 0\n";
+        cerr << "myString::myString(const char): bad_alloc: Arr == 0\n";
         throw bad_alloc();
     }
 
-    strcpy(buffer,charSeq);             // Copy the string
+    strcpy(Arr,charSeq);             // Copy the string
 }
 
 //--------------------------------------------------------------------
@@ -49,11 +49,11 @@ myString:: myString ( const myString &valuemyString )
 //                      myString str1("First"),
 //                             str2 = str1; 
 
-  : bufferSize(valuemyString.bufferSize)
+  : myStringSize(valuemyString.myStringSize)
 
 {
-    buffer = new char [bufferSize];    // Allocate memory
-    strcpy(buffer,valuemyString.buffer);   // Copy the string
+    Arr = new char [myStringSize];    // Allocate memory
+    strcpy(Arr,valuemyString.Arr);   // Copy the string
 }
 
 //--------------------------------------------------------------------
@@ -65,35 +65,35 @@ void myString:: operator = ( const myString& other )
 {
     int rlen = other.getLength();   // Length of other
 
-    if ( rlen >= bufferSize )          // If other will not fit
+    if ( rlen >= myStringSize )          // If other will not fit
     {
-       delete [] buffer;                    // Release buffer and
-       bufferSize = rlen + 1;               //  allocate a new
-       buffer = new char [ bufferSize ];    //  (larger) buffer
+       delete [] Arr;                    // Release Arr and
+       myStringSize = rlen + 1;               //  allocate a new
+       Arr = new char [ myStringSize ];    //  (larger) Arr
     }
 
-    strcpy(buffer,other.buffer);   // Copy other
+    strcpy(Arr,other.Arr);   // Copy other
 }
 
 //--------------------------------------------------------------------
 
 myString:: ~myString ()
 
-// Frees the memory used by the myString object buffer.
+// Frees the memory used by the myString object Arr.
 
 {
-    delete [] buffer;
+    delete [] Arr;
 }
 
 //--------------------------------------------------------------------
 
 int myString:: getLength () const
 
-// Returns the number of characters in the myString object buffer (excluding the
+// Returns the number of characters in the myString object Arr (excluding the
 // null character).
 
 {
-    return strlen(buffer);
+    return strlen(Arr);
 }
 
 //--------------------------------------------------------------------
@@ -105,7 +105,7 @@ char myString:: operator [] ( int n ) const
 
 {
     if ( n >= 0  &&  n <= getLength() )
-       return buffer[n];
+       return Arr[n];
     else
        return '\0';
 }
@@ -114,11 +114,11 @@ char myString:: operator [] ( int n ) const
 
 void myString:: clear ()
 
-// Clears a myString object -- i.e., makes it empty. The buffer size
+// Clears a myString object -- i.e., makes it empty. The Arr size
 // remains unchanged.
 
 {
-    buffer[0] ='\0';
+    Arr[0] ='\0';
 }
 
 //--------------------------------------------------------------------
@@ -131,11 +131,11 @@ void myString:: showStructure () const
 {
     int j;   // Loop counter
 
-    for ( j = 0 ; j < bufferSize ; j++ )
+    for ( j = 0 ; j < myStringSize ; j++ )
         cout << j << "\t";
     cout << endl;
-    for ( j = 0 ; buffer[j] != '\0' ; j++ )
-        cout << buffer[j] << "\t";
+    for ( j = 0 ; Arr[j] != '\0' ; j++ )
+        cout << Arr[j] << "\t";
     cout << "\\0" << endl;
 }
 
@@ -152,9 +152,9 @@ istream & operator >> ( istream &input, myString &inputmyString )
 
 {
     const int textBufferSize = 256;     // Large (but finite)
-    char textBuffer [textBufferSize];   // text buffer
+    char textBuffer [textBufferSize];   // text Arr
 
-    // Read a string into textBuffer, setw is used to prevent buffer
+    // Read a string into textBuffer, setw is used to prevent Arr
     // overflow.
 
     input >> setw(textBufferSize) >> textBuffer;
@@ -178,7 +178,7 @@ ostream & operator << ( ostream &output, const myString &outputmyString )
 // Returns the state of the output stream.
 
 {
-   output << outputmyString.buffer;
+   output << outputmyString.Arr;
    return output;
 }
 
@@ -190,9 +190,9 @@ myString myString:: toUpper ( ) const
 // (In-lab 2)  Returns a myString object containing an upper-case copy of myString object.
 
 {
-   int length = strlen(buffer);
+   int length = strlen(Arr);
    char *tempBuf = new char[length + 1]; //char tempBuf[length + 1];
-   strcpy(tempBuf, buffer);
+   strcpy(tempBuf, Arr);
    for ( int i=0; i<length; i++) {
        tempBuf[i] = toupper( tempBuf[i] );
    }
@@ -213,9 +213,9 @@ myString myString:: toLower ( ) const
 // (In-lab 2)  Returns a myString object containing a lower-case copy of myString object.
 
 {
-   int length = strlen(buffer);
+   int length = strlen(Arr);
    char *tempBuf = new char[length + 1]; //char tempBuf[length + 1];
-   strcpy(tempBuf, buffer);
+   strcpy(tempBuf, Arr);
    for ( int i=0; i<length; i++) {
        tempBuf[i] = tolower( tempBuf[i] );
    }
@@ -232,7 +232,7 @@ bool myString::operator == ( const myString &other ) const
 // other. Otherwise returns false.
 
 {
-    return ( strcmp(buffer,other.buffer) == 0 );
+    return ( strcmp(Arr,other.Arr) == 0 );
 }
 
 //--------------------------------------------------------------------
@@ -243,7 +243,7 @@ bool myString::operator < ( const myString &other ) const
 // than other. Otherwise returns false.
 
 {
-    return ( strcmp(buffer,other.buffer) < 0 );
+    return ( strcmp(Arr,other.Arr) < 0 );
 }
 
 //--------------------------------------------------------------------
@@ -254,6 +254,6 @@ bool myString::operator > ( const myString &other ) const
 // greater than other. Otherwise returns false.
 
 {
-    return ( strcmp(buffer,other.buffer) > 0 );
+    return ( strcmp(Arr,other.Arr) > 0 );
 }
 

@@ -51,8 +51,8 @@ class myString
   private:
 
     // Data members
-    int bufferSize;   // Size of the string buffer
-    char *buffer;     // myString buffer containing a null-terminated sequence of characters
+    int myStringSize;   // Size of the string buffer
+    char *Arr;     // myString Arr containing a null-terminated sequence of characters
 
   // Friends
 
